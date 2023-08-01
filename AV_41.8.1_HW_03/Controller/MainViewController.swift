@@ -17,6 +17,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
     private var collectionView: UICollectionView!
     private var viewModel = MainViewModel()
     private var bag = DisposeBag()
+    let mainLayout = MainLayout()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,31 +25,12 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
         title = "Animation & Cartoons"
         view.backgroundColor = .white
         
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: mainLayout.createLayout())
         collectionView.register(MainCell.self, forCellWithReuseIdentifier: MainCell.reuseIdentifier)
         view.addSubview(collectionView)
         bindCollectionViewData()
         
         viewModel.playerController = AVPlayerViewController()
-    }
-
-    private func createLayout() -> UICollectionViewLayout {
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalHeight(1))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
-        
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(250))
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, repeatingSubitem: item, count: 1)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        
-        return layout
     }
     
     func bindCollectionViewData() {
